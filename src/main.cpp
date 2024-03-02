@@ -5,23 +5,29 @@
 
 int main(int argc, char const *argv[])
 {
-    std::cout<<"Hello World !!"<<std::endl;
+    Encounter Combat;
 
-    MonsterList mList(std::vector<Monster>{Monster("Moche", 10),
-                                        Monster("moche2", 50),
-                                        Monster("jf", 3), 
-                                        Monster("hfhf", 4), 
-                                        Monster("k", 5), 
-                                        Monster("hh", 6), 
-                                        Monster("hh", 7),
-                                        Monster("hh", 8),
-                                        Monster("h", 9),
-                                        Monster("jj", 10),
-                                        Monster("k", 11),
-                                        Monster("kkj", 12),
-                                        Monster("k", 13),
-                                        Monster("kk", 14),
-                                        Monster("kk", 15)});
-    std::cout<<mList.computeMonstersPxMulti(4)<<std::endl;
+    Member Zelie("Zélie", 5);
+    Combat.addMember(Zelie);
+    Member Tristepin("Tristepin", 5);
+    Combat.addMember(Tristepin);
+    
+    
+    Monster Pixie("Pixie", 50);
+    Combat.addMonster(Pixie);
+    Combat.addMonster(Pixie);
+    Combat.addMonster(Pixie);
+    Combat.addMonster(Pixie);
+    Combat.addMonster(Pixie);
+    Monster Quasit("Quasit", 200);
+    Combat.addMonster(Quasit);
+
+    std::cout<<"Members Px thresholds : "<<std::endl;
+    std::vector<int> thresholds = Combat.getMemberList().computeAllMembersPx();
+    std::cout<<thresholds[0]<<" "<<thresholds[1]<<" "<<thresholds[2]<<" "<<thresholds[3]<<std::endl;
+    std::cout<<"Monsters Px : "<<Combat.getMonsterList().computeMonstersPx(Combat.getMemberList().getSize())<<std::endl;
+    DifficType diffic = Combat.computeDifficulty();
+    std::cout<<diffic._difficultyName<<std::endl;
+    
     return 0;
 }

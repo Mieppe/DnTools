@@ -13,6 +13,12 @@ struct EncounterMulti{
     EncounterMulti(int monsterNb, float multiplicator) : _monsterNb(monsterNb), _multiplicator(multiplicator) {};
 };
 
+struct DifficType{
+    int _difficultyVal;
+    std::string _difficultyName;
+    DifficType(int difficulty);
+};
+
 class Member{
 
     private:
@@ -51,8 +57,10 @@ class MemberList{
 
         MemberList() : _members(std::vector<Member>()) {};
         MemberList(std::vector<Member> list) : _members(list) {};
+        int getSize() const { return int(_members.size()); }
         void addMember(Member const member);
         int computeMembersPx(int difficulty) const;
+        std::vector<int> computeAllMembersPx() const;
 };
 
 class MonsterList{
@@ -83,9 +91,11 @@ class Encounter{
         Encounter(MemberList memberList, MonsterList monsterList) : _memberList(memberList), _monsterList(monsterList) {};
         void setMemberList(MemberList const memberList) { _memberList = memberList; };
         void setMonsterList(MonsterList const monsterList) { _monsterList = monsterList; };
+        MemberList getMemberList() const { return _memberList; };
+        MonsterList getMonsterList() const { return _monsterList; };
         void addMember(Member member);
         void addMonster(Monster monster);
-        int computeDifficulty() const;
+        DifficType computeDifficulty() const;
 };
 
 

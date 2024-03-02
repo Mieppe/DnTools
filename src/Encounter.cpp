@@ -17,6 +17,14 @@ std::vector<EncounterMulti> encounterMultiTable{EncounterMulti(0, 0.5),
                                                 EncounterMulti(11, 3), 
                                                 EncounterMulti(15, 4),
                                                 EncounterMulti(999, 5)};
+DifficType::DifficType(int difficulty){
+    _difficultyVal = difficulty;
+    _difficultyName = "Not Set";
+    if(difficulty == Easy) _difficultyName = "Easy";
+    else if(difficulty == Medium) _difficultyName = "Medium";
+    else if(difficulty == Hard) _difficultyName = "Hard";
+    else if(difficulty == Mortal) _difficultyName = "Mortal";
+}
 
 // ****************************************************************************
 //                              MEMBER
@@ -61,6 +69,14 @@ int MemberList::computeMembersPx(int difficulty) const {
     return groupTh;
 }
 
+std::vector<int> MemberList::computeAllMembersPx() const {
+    std::vector<int> results;
+    for(int i = 1; i < 5; i++){
+        results.push_back(computeMembersPx(i));
+    }
+    return results;
+}
+
 // ****************************************************************************
 //                              MONSTER LIST
 // **************************************************************************** 
@@ -72,20 +88,12 @@ void MonsterList::addMonster(Monster const monster){
 float MonsterList::computeMonstersPxMulti(int adventurerNb) const{
     float multiplicator = 0;
     int multOffset = 0;
-    if(adventurerNb <3){
-        multOffset = 1;
-        std::cout<<"multoffset : "<<multOffset<<std::endl;
-    }
+    if(adventurerNb <3) multOffset = 1;
     else if(adventurerNb >= 6) multOffset = -1;
     int monsterNb = _monsters.size();
     if(monsterNb == 0) return 0;
     for(int i = 0; i < int(encounterMultiTable.size()); i++){
         if(monsterNb >= encounterMultiTable[i]._monsterNb){
-            std::cout<<" i : "<<i<<" multoffset : "<<multOffset<<std::endl;
-            std::cout<<"encountertable : "<<encounterMultiTable[i]._multiplicator<<std::endl;
-            std::cout<<"encountertableoffeted : "<<encounterMultiTable[i + multOffset]._multiplicator<<std::endl;
-            std::cout<<"encounter monster number "<<encounterMultiTable[i]._monsterNb<<std::endl;
-            std::cout<<"encounter monster number offseted "<<encounterMultiTable[i + multOffset]._monsterNb<<std::endl;
             multiplicator = encounterMultiTable[i + multOffset]._multiplicator;
         }
     }
@@ -94,8 +102,12 @@ float MonsterList::computeMonstersPxMulti(int adventurerNb) const{
 
 float MonsterList::computeMonstersPx(int adventurerNb) const{
     float multiplicator = computeMonstersPxMulti(adventurerNb);
-    // WIP
-    return multiplicator; // to delete, only to compile
+    float totalPx = 0;
+    for(auto monster : _monsters){
+        totalPx += monster.getPxValue();
+    }
+    totalPx *= multiplicator;
+    return totalPx;
 }
 
 // ****************************************************************************
@@ -103,13 +115,22 @@ float MonsterList::computeMonstersPx(int adventurerNb) const{
 // **************************************************************************** 
 
 void Encounter::addMember(Member member){
-    return; // wip
+    _memberList.addMember(member);
 }
 
 void Encounter::addMonster(Monster monster){
-    return; // wip
+    _monsterList.addMonster(monster);
 }
 
-int Encounter::computeDifficulty() const{
-    return 0; // wip
+DifficType Encounter::computeDifficulty() const{
+    std::vector<int> membersPxTh = _memberList.computeAllMembersPx();
+    int membersNb = _memberList.getSize();
+    float monstersPx = _monsterList.computeMonstersPx(membersNb);
+    int diffic = 0;
+    if(monstersPx >= membersPxTh[3]) diffic = Mortal;
+    else if(monstersPx >= membersPxTh[2]) diffic = Hard;
+    else if(monstersPx >= membersPxTh[1]) diffic = Medium;
+    else diffic = Easy;
+    DifficType DifficultyType(diffic);
+    return diffic;
 }
