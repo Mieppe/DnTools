@@ -1,24 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include "utils.hpp"
-#include "image.hpp"
-#include <opencv2/opencv.hpp>
+#include "Encounter.hpp"
 
 int main(int argc, char const *argv[])
 {
     std::cout<<"Hello World !!"<<std::endl;
 
-    PixelMatrix matrix = PixelMatrix();
-    std::cout<<matrix.isEmpty()<<std::endl;
-    matrix.setSizeHeight(3);
-    std::cout<<matrix.isEmpty()<<std::endl;
-    matrix.setSizeWidth(3);
-    std::cout<<matrix.isEmpty()<<std::endl;
-    Image img = Image(matrix, 10);
-    cv::Mat generatedImage = img.generateCVImage();
-    char window[] = "pixel art";
-    cv::imshow(window, generatedImage);
-    cv::waitKey(0);
+    MonsterList mList(std::vector<Monster>{Monster("Moche", 10),
+                                        Monster("moche2", 50),
+                                        Monster("jf", 3), 
+                                        Monster("hfhf", 4), 
+                                        Monster("k", 5), 
+                                        Monster("hh", 6), 
+                                        Monster("hh", 7),
+                                        Monster("hh", 8),
+                                        Monster("h", 9),
+                                        Monster("jj", 10),
+                                        Monster("k", 11),
+                                        Monster("kkj", 12),
+                                        Monster("k", 13),
+                                        Monster("kk", 14),
+                                        Monster("kk", 15)});
+    std::cout<<mList.computeMonstersPxMulti(4)<<std::endl;
     return 0;
 }
