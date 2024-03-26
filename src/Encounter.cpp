@@ -18,12 +18,12 @@ std::vector<EncounterMulti> encounterMultiTable{EncounterMulti(0, 0.5),
                                                 EncounterMulti(15, 4),
                                                 EncounterMulti(999, 5)};
 DifficType::DifficType(int difficulty){
-    _difficultyVal = difficulty;
-    _difficultyName = "Not Set";
-    if(difficulty == Easy) _difficultyName = "Easy";
-    else if(difficulty == Medium) _difficultyName = "Medium";
-    else if(difficulty == Hard) _difficultyName = "Hard";
-    else if(difficulty == Mortal) _difficultyName = "Mortal";
+    this->_difficultyVal = difficulty;
+    this->_difficultyName = "Not Set";
+    if(difficulty == Easy) this->_difficultyName = "Easy";
+    else if(difficulty == Medium) this->_difficultyName = "Medium";
+    else if(difficulty == Hard) this->_difficultyName = "Hard";
+    else if(difficulty == Mortal) this->_difficultyName = "Mortal";
 }
 
 // ****************************************************************************
@@ -50,7 +50,7 @@ int Member::computePxThreshold(int difficulty) const {
         thresholds = easyThresholds;
         break;
     }
-    return thresholds[_level];
+    return thresholds[this->_level];
 }
 
 // ****************************************************************************
@@ -58,12 +58,12 @@ int Member::computePxThreshold(int difficulty) const {
 // ****************************************************************************     
 
 void MemberList::addMember(Member const member){
-    _members.push_back(member);
+    this->_members.push_back(member);
 }
 
 int MemberList::computeMembersPx(int difficulty) const {
     float groupTh = 0;
-    for(auto member : _members){
+    for(auto member : this->_members){
         groupTh += member.computePxThreshold(difficulty);
     }
     return groupTh;
@@ -82,7 +82,7 @@ std::vector<int> MemberList::computeAllMembersPx() const {
 // **************************************************************************** 
 
 void MonsterList::addMonster(Monster const monster){
-    _monsters.push_back(monster);
+    this->_monsters.push_back(monster);
 }
 
 float MonsterList::computeMonstersPxMulti(int adventurerNb) const{
@@ -90,7 +90,7 @@ float MonsterList::computeMonstersPxMulti(int adventurerNb) const{
     int multOffset = 0;
     if(adventurerNb <3) multOffset = 1;
     else if(adventurerNb >= 6) multOffset = -1;
-    int monsterNb = _monsters.size();
+    int monsterNb = this->_monsters.size();
     if(monsterNb == 0) return 0;
     for(int i = 0; i < int(encounterMultiTable.size()); i++){
         if(monsterNb >= encounterMultiTable[i]._monsterNb){
@@ -103,7 +103,7 @@ float MonsterList::computeMonstersPxMulti(int adventurerNb) const{
 float MonsterList::computeMonstersPx(int adventurerNb) const{
     float multiplicator = computeMonstersPxMulti(adventurerNb);
     float totalPx = 0;
-    for(auto monster : _monsters){
+    for(auto monster : this->_monsters){
         totalPx += monster.getPxValue();
     }
     totalPx *= multiplicator;
@@ -115,17 +115,17 @@ float MonsterList::computeMonstersPx(int adventurerNb) const{
 // **************************************************************************** 
 
 void Encounter::addMember(Member member){
-    _memberList.addMember(member);
+    this->_memberList.addMember(member);
 }
 
 void Encounter::addMonster(Monster monster){
-    _monsterList.addMonster(monster);
+    this->_monsterList.addMonster(monster);
 }
 
 DifficType Encounter::computeDifficulty() const{
-    std::vector<int> membersPxTh = _memberList.computeAllMembersPx();
-    int membersNb = _memberList.getSize();
-    float monstersPx = _monsterList.computeMonstersPx(membersNb);
+    std::vector<int> membersPxTh = this->_memberList.computeAllMembersPx();
+    int membersNb = this->_memberList.getSize();
+    float monstersPx = this->_monsterList.computeMonstersPx(membersNb);
     int diffic = 0;
     if(monstersPx >= membersPxTh[3]) diffic = Mortal;
     else if(monstersPx >= membersPxTh[2]) diffic = Hard;

@@ -1,3 +1,10 @@
+# Cmake stuff
+Makefile
+CMakeFiles
+*.cmake
+CMakeCache.txt
+DnTools
+
 # Prerequisites
 *.d
 
