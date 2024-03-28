@@ -3,8 +3,22 @@
 #include <iostream>
 #include "Encounter.hpp"
 
-int main(int argc, char const *argv[])
+#include "mainWindow.hpp" 
+
+#include <QApplication> 
+
+
+
+
+int main(int argc, char *argv[])
 {
+    std::cout<<"ui"<<std::endl;
+    QApplication a(argc, argv); 
+    MainWindow w; 
+    w.show(); 
+    a.exec(); 
+
+
     Encounter Combat;
 
     Member Zelie("Zélie", 5);
@@ -28,6 +42,7 @@ int main(int argc, char const *argv[])
     std::cout<<"Monsters Px : "<<Combat.getMonsterList().computeMonstersPx(Combat.getMemberList().getSize())<<std::endl;
     DifficType diffic = Combat.computeDifficulty();
     std::cout<<diffic._difficultyName<<std::endl;
+    std::cout<<"yes"<<std::endl;
     
     return 0;
 }

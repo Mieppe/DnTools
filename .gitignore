@@ -1,9 +1,14 @@
-# Cmake stuff
-Makefile
-CMakeFiles
-*.cmake
-CMakeCache.txt
-DnTools
+# VSCode
+.vscode/*
+
+# Build
+build/*
+
+# Cmake
+CMakeFiles/*
+
+# Qt
+.qt/*
 
 # Prerequisites
 *.d
